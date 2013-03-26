@@ -461,7 +461,7 @@ class Mega(object):
 
     ##########################################################################
     # UPLOAD
-    def upload(self, filename, dest=None):
+    def upload(self, filename, dest=None, dest_filename=None):
         #determine storage node
         if dest is None:
             #if none set, upload to cloud drive node
@@ -510,7 +510,7 @@ class Mega(object):
         #determine meta mac
         meta_mac = (file_mac[0] ^ file_mac[1], file_mac[2] ^ file_mac[3])
 
-        attribs = {'n': os.path.basename(filename)}
+        attribs = {'n': dest_filename if dest_filename else os.path.basename(filename)}
         encrypt_attribs = base64_url_encode(encrypt_attr(attribs, ul_key[:4]))
         key = [ul_key[0] ^ ul_key[4], ul_key[1] ^ ul_key[5],
                ul_key[2] ^ meta_mac[0], ul_key[3] ^ meta_mac[1],
