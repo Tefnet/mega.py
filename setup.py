@@ -1,9 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 
-from distutils.core import setup
+from distutils.core import setup, Command
 import os
 
+class TestCommand(Command):
+    description = "run tests"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        from unittest import TextTestRunner, TestLoader
+        loader = TestLoader()
+        runner = TextTestRunner(verbosity=2)
+        tests = loader.discover('tests')
+        runner.run(tests)
 
 def get_packages(package):
     """
@@ -33,6 +49,7 @@ setup(
     version='0.9',
     packages=get_packages('mega'),
     package_data=get_package_data('mega'),
+    cmdclass=dict(test=TestCommand),
     description='Python lib for the Mega.co.nz API',
     author='Richard O\'Dwyer',
     author_email='richard@richard.do',
